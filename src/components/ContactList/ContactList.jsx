@@ -1,12 +1,18 @@
 import s from './ContactList.module.css';
 import { useSelector , useDispatch} from 'react-redux';
 import { getContacts } from 'redux/contactsSelector';
-import { deleteContactsAction } from 'redux/contactsSlice';
+import {  deleteContact, fetchContacts } from 'redux/contactsThunk';
+import { useEffect } from 'react';
 
 
 export const ContactList = ({ title }) => {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <>
       <h2 className={s.title}>{title}</h2>
@@ -20,7 +26,7 @@ export const ContactList = ({ title }) => {
               </p>
               <button
                 type="button"
-                onClick={() => dispatch(deleteContactsAction(contact.id))}
+                onClick={() => dispatch(deleteContact(contact.id))}
                 className={s.BtnDelete}
               >
                 Delete
